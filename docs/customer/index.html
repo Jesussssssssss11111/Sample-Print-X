@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <title>Print X – Bring Your Ideas to Life</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* ── Hero ─────────────────────────────────── */
+    .hero {
+      background: var(--dark);
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 50%, rgba(255,0,0,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(255,0,0,0.08) 0%, transparent 40%);
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,0,0,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .hero-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      animation: fadeInLeft 0.8s ease;
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,0,0,0.1);
+      border: 1px solid rgba(255,0,0,0.3);
+      color: var(--red-light);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      color: var(--white);
+      margin-bottom: 24px;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+    }
+
+    .hero h1 .highlight {
+      color: var(--red);
+      position: relative;
+    }
+
+    .hero-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-item {
+      text-align: left;
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-number span { color: var(--red); }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Hero Visual ──────────────────────────── */
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInRight 0.8s ease 0.2s both;
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .hero-3d-display {
+      width: 420px;
+      height: 420px;
+      position: relative;
+    }
+
+    .hero-3d-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,0,0,0.2);
+      animation: rotate 20s linear infinite;
+    }
+
+    .ring-1 {
+      inset: 0;
+      border-color: rgba(255,0,0,0.15);
+      animation-duration: 20s;
+    }
+
+    .ring-2 {
+      inset: 30px;
+      border-color: rgba(255,0,0,0.2);
+      animation-direction: reverse;
+      animation-duration: 15s;
+    }
+
+    .ring-3 {
+      inset: 60px;
+      border-color: rgba(255,0,0,0.25);
+      animation-duration: 10s;
+    }
+
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-3d-center {
+      position: absolute;
+      inset: 90px;
+      background: linear-gradient(135deg, rgba(255,0,0,0.15), rgba(0,0,0,0.4));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,0,0,0.3);
+      box-shadow:
+        0 0 60px rgba(255,0,0,0.1),
+        inset 0 0 40px rgba(255,0,0,0.05);
+    }
+
+    .hero-icon {
+      font-size: 4rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    .hero-orbit-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--red);
+      border-radius: 50%;
+      box-shadow: 0 0 16px rgba(255,0,0,0.6);
+    }
+
+    /* ── Video Section ─────────────────────────── */
+    .video-section {
+      background: var(--dark);
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .video-wrapper {
+      position: relative;
+      max-width: 900px;
+      margin: 48px auto 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 0, 0, 0.25);
+      box-shadow:
+        0 0 60px rgba(255, 0, 0, 0.12),
+        0 32px 64px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-wrapper video,
+    .video-wrapper iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      background: #000;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    .video-placeholder .play-btn {
+      width: 80px;
+      height: 80px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 0 32px rgba(255, 0, 0, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .video-placeholder:hover .play-btn {
+      transform: scale(1.1);
+      box-shadow: 0 0 48px rgba(255, 0, 0, 0.7);
+    }
+
+    .video-placeholder p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+    }
+
+    .video-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      color: var(--red-light);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .video-wrapper { border-radius: 10px; }
+    }
+
+    /* ── What is 3D Printing ───────────────────── */
+    .info-section {
+      background: var(--gray-light);
+      padding: 80px 0;
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .info-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      text-align: center;
+      border: 1px solid var(--gray-mid);
+      transition: all var(--transition);
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(255,0,0,0.2);
+    }
+
+    .info-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--red-glow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 20px;
+      border: 2px solid rgba(255,0,0,0.15);
+    }
+
+    .info-card h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .info-card p {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      line-height: 1.65;
+    }
+
+    /* ── Featured Products ─────────────────────── */
+    .featured-section {
+      padding: 80px 0;
+    }
+
+    /* ── CTA Strip ─────────────────────────────── */
+    .cta-strip {
+      background: var(--red);
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .cta-strip h2 {
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .cta-strip p {
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      font-size: 1rem;
+    }
+
+    .btn-white {
+      background: white;
+      color: var(--red);
+    }
+
+    .btn-white:hover {
+      background: var(--gray-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    /* ── Process Steps ─────────────────────────── */
+    .process-section {
+      background: var(--dark);
+      padding: 80px 0;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: calc(12.5% + 16px);
+      right: calc(12.5% + 16px);
+      height: 1px;
+      background: rgba(255,0,0,0.3);
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-num {
+      width: 64px;
+      height: 64px;
+      background: var(--red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: white;
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 24px rgba(255,0,0,0.4);
+    }
+
+    .step h3 {
+      color: white;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .hero-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+      .hero-desc { margin: 0 auto 40px; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-visual { display: none; }
+      .info-cards { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: repeat(2, 1fr); }
+      .process-steps::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar"></header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Next-Gen 3D Printing Service</div>
+        <h1>
+          Bring Your<br>
+          <span class="highlight">Ideas to Life</span>
+        </h1>
+        <p class="hero-desc">
+          Print X is a modern 3D printing service that turns digital designs into 
+          real-world objects. From keychains to custom models — we print it all 
+          with precision and speed.
+        </p>
+        <div class="hero-actions">
+          <a href="product.html" class="btn btn-primary btn-lg">
+            🛒 Shop Product
+          </a>
+          <a href="custom.html" class="btn btn-outline btn-lg">
+            ⬡ Custom Order
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">500<span>+</span></div>
+            <div class="stat-label">Orders Fulfilled</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">20<span>+</span></div>
+            <div class="stat-label">Color Options</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">99<span>%</span></div>
+            <div class="stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-3d-display">
+          <div class="hero-3d-ring ring-1"></div>
+          <div class="hero-3d-ring ring-2"></div>
+          <div class="hero-3d-ring ring-3"></div>
+          <div class="hero-3d-center">
+            <div class="hero-icon">🖨️</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SHOWCASE -->
+  <section class="video-section">
+    <div class="container">
+      <div class="section-title">
+        <div class="video-badge">▶ See It In Action</div>
+        <h2 style="color:white;">Watch How It Works</h2>
+        <p style="color:rgba(255,255,255,0.5);">See our 3D printing process from digital file to finished product</p>
+        <div class="line"></div>
+      </div>
+      <div class="video-wrapper" id="videoWrapper">
+        
+         
+            <video autoplay muted loop playsinline poster="path/to/thumbnail.jpg" width="600">
+  <source src="vid/3d.mp4" type="video/mp4">
+</video>
+ 
+            <!--  
+          Option B — YouTube embed:
+            <iframe width="600" height="350"
+  src="https://www.youtube.com/embed/9cLFAI1_fmU"
+  title="Print X – 3D Printing Showcase"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+ -->
+
+<!-- 
+          Option C — Facebook Video embed:
+            <iframe src="https://www.facebook.com/plugins/video.php?href=YOUR_VIDEO_URL"
+              frameborder="0" allowfullscreen></iframe>
+
+          Replace the placeholder below once your video is ready.
+        -->
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS 3D PRINTING -->
+  <section class="info-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>What is 3D Printing?</h2>
+        <p>Additive manufacturing that creates physical objects from digital files, layer by layer</p>
+        <div class="line"></div>
+      </div>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">📐</div>
+          <h3>Design</h3>
+          <p>Start with a digital 3D model file (STL, OBJ, etc.) created in software like Blender, Fusion 360, or download from Thingiverse.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">⚙️</div>
+          <h3>Slice & Print</h3>
+          <p>Your file is sliced into thin layers and the printer builds it up layer by layer using melted filament or UV-cured resin.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">✨</div>
+          <h3>Deliver</h3>
+          <p>After printing and post-processing, your finished object is quality-checked, packaged, and delivered to your doorstep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Featured Products</h2>
+        <p>Popular ready-made items you can order right now</p>
+        <div class="line"></div>
+      </div>
+      <div class="products-grid" id="featured-products">
+        <div class="loading-wrap">
+          <div class="spinner"></div>
+          <span>Loading products...</span>
+        </div>
+      </div>
+      <div class="text-center mt-32">
+        <a href="product.html" class="btn btn-outline btn-lg">View All Product →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <div class="container">
+      <div class="section-title">
+        <h2 style="color:white;">How It Works</h2>
+        <p style="color:rgba(255,255,255,0.5);">Order your 3D print in 4 simple steps</p>
+        <div class="line"></div>
+      </div>
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3>Browse & Choose</h3>
+          <p>Pick from our ready-made products or submit a custom order.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3>Place Order</h3>
+          <p>Add to cart, fill in your address, and confirm your order.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3>We Print</h3>
+          <p>Our printers get to work creating your item with precision.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>Fast Delivery</h3>
+          <p>Receive your freshly printed order at your doorstep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-strip">
+    <div class="container">
+      <h2>Have a Custom Design?</h2>
+      <p>Upload your 3D file and we'll give you an instant price estimate!</p>
+      <a href="custom.html" class="btn btn-white btn-lg">Submit Custom Order →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer"></footer>
+
+  <!-- TOAST -->
+  <div class="toast-container"></div>
+
+  <script src="../assets/js/script.js"></script>
+  <script>
+    renderNavbar('home');
+
+    async function loadFeaturedProducts() {
+      const grid = document.getElementById('featured-products');
+      const res = await apiFetch('/products/');
+      if (!res.ok) {
+        grid.innerHTML = '<p class="text-center text-gray">Failed to load products.</p>';
+        return;
+      }
+      const products = res.data.products.slice(0, 3);
+      if (products.length === 0) {
+        grid.innerHTML = '<p class="text-center text-gray">No products found.</p>';
+        return;
+      }
+      grid.innerHTML = products.map(p => renderProductCard(p)).join('');
+    }
+
+    function renderProductCard(p) {
+      const img = p.image
+        ? `<img src="${p.image}" alt="${p.name}" class="product-card-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : '';
+      return `
+        <div class="product-card">
+          ${img}
+          <div class="product-card-image-placeholder" style="${p.image ? 'display:none' : ''}">🖨️</div>
+          <div class="product-card-body">
+            <div class="product-card-name">${p.name}</div>
+            <div class="product-card-desc">${p.description}</div>
+            <div class="product-card-footer">
+              <span class="product-price">${formatPrice(p.price)}</span>
+              <button class="btn btn-primary btn-sm" onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}')">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function addToCart(productId, name) {
+      if (!requireAuth()) return;
+      const res = await apiFetch('/cart/add/', {
+        method: 'POST',
+        body: JSON.stringify({ product_id: productId, quantity: 1 }),
+      });
+      if (res.ok) {
+        Toast.success(`${name} added to cart!`);
+        updateCartCount();
+      } else {
+        Toast.error(res.data.error || 'Failed to add to cart.');
+      }
+    }
+
+    loadFeaturedProducts();
+  </script>
+</body>
+</html>
