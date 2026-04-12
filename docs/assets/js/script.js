@@ -44,13 +44,16 @@ async function refreshAccessToken() {
       localStorage.setItem('px_access', d.access);
       return true;
     }
-    catch (err) {
-  console.error('Refresh token error:', err);
-  return false;
+    Auth.clearSession();
+    return false;
+  } catch (err) {
+    console.error('Refresh token error:', err);
+    return false;
+  }
 }
 
 /* ── API Fetch Wrapper ───────────────────────────────────*/
-async function apiFetch(endpoint, options = {}, isFormData = false) {
+async function apiFetch(endpoint, options = {}, isFormData = false, _retry = false) {
   const token = Auth.getAccess();
   const headers = {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -65,9 +68,9 @@ async function apiFetch(endpoint, options = {}, isFormData = false) {
     const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
 
     // Token expired — try refresh once
-   if (res.status === 401) {
+  if (res.status === 401 && !_retry) {
   const refreshed = await refreshAccessToken();
-  if (refreshed) return apiFetch(endpoint, options, isFormData);
+  if (refreshed) return apiFetch(endpoint, options, isFormData, true);
 
   console.warn("Session expired");
   return { ok: false, status: 401, data: {} };
@@ -225,7 +228,7 @@ document.addEventListener('click', (e) => {
 async function handleLogout() {
   const refresh = Auth.getRefresh();
   if (refresh) {
-    await apiFetch('logout/', { method: 'POST', body: JSON.stringify({ refresh }) }).catch(() => {});
+    await apiFetch('/logout/', { method: 'POST', body: JSON.stringify({ refresh }) }).catch(() => {});
   }
   Auth.logout();
   Toast.success('Logged out successfully.');
@@ -246,7 +249,7 @@ async function updateCartCount() {
   }
 
   try {
-    const res = await apiFetch('cart/');
+    const res = await apiFetch('/cart/');
     if (res.ok) {
       const cartItems = res.data?.items || res.data?.cart || [];
       const count = cartItems.reduce((s, item) => s + (item.quantity || 1), 0);
@@ -345,7 +348,7 @@ function requireLogin() { return requireAuth(); }
 /* ── Add to Cart ─────────────────────────────────────────*/
 async function addToCart(productId, productName) {
   if (!requireAuth()) return;
-  const { ok, data } = await apiFetch('cart/add/', {
+  const { ok, data } = await apiFetch('/cart/add/', {
     method: 'POST',
     body: JSON.stringify({ product_id: productId, quantity: 1 }),
   });
