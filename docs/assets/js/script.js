@@ -13,7 +13,7 @@ const Auth = {
     try { return JSON.parse(localStorage.getItem('px_user')) || null; }
     catch { return null; }
   },
-  isLoggedIn() { return !!this.getAccess() && !this.getUser()?.is_admin; },
+ isLoggedIn() { return !!this.getAccess() && this.getUser()?.is_admin !== true; },
   isAdmin()    { return !!this.getAccess() && !!this.getUser()?.is_admin; },
   isAnyUser()  { return !!this.getAccess(); },
   setSession(access, refresh, user) {
