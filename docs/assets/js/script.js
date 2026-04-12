@@ -44,9 +44,9 @@ async function refreshAccessToken() {
       localStorage.setItem('px_access', d.access);
       return true;
     }
-    Auth.clearSession();
-    return false;
-  } catch { return false; }
+    catch (err) {
+  console.error('Refresh token error:', err);
+  return false;
 }
 
 /* ── API Fetch Wrapper ───────────────────────────────────*/
@@ -65,13 +65,13 @@ async function apiFetch(endpoint, options = {}, isFormData = false) {
     const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
 
     // Token expired — try refresh once
-    if (res.status === 401 && !options.headers?.Authorization) {
-      const refreshed = await refreshAccessToken();
-      if (refreshed) return apiFetch(endpoint, options, isFormData);
-      Auth.clearSession();
-      window.location.href = getBasePath() + 'customer/login.html';
-      return { ok: false, status: 401, data: {} };
-    }
+   if (res.status === 401) {
+  const refreshed = await refreshAccessToken();
+  if (refreshed) return apiFetch(endpoint, options, isFormData);
+
+  console.warn("Session expired");
+  return { ok: false, status: 401, data: {} };
+}
 
     const contentType = res.headers.get('content-type') || '';
     const data = contentType.includes('application/json') ? await res.json() : await res.text();
