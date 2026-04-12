@@ -225,7 +225,7 @@ document.addEventListener('click', (e) => {
 async function handleLogout() {
   const refresh = Auth.getRefresh();
   if (refresh) {
-    await apiFetch('/logout/', { method: 'POST', body: JSON.stringify({ refresh }) }).catch(() => {});
+    await apiFetch('logout/', { method: 'POST', body: JSON.stringify({ refresh }) }).catch(() => {});
   }
   Auth.logout();
   Toast.success('Logged out successfully.');
@@ -246,7 +246,7 @@ async function updateCartCount() {
   }
 
   try {
-    const res = await apiFetch('/cart/');
+    const res = await apiFetch('cart/');
     if (res.ok) {
       const cartItems = res.data?.items || res.data?.cart || [];
       const count = cartItems.reduce((s, item) => s + (item.quantity || 1), 0);
@@ -345,7 +345,7 @@ function requireLogin() { return requireAuth(); }
 /* ── Add to Cart ─────────────────────────────────────────*/
 async function addToCart(productId, productName) {
   if (!requireAuth()) return;
-  const { ok, data } = await apiFetch('/cart/add/', {
+  const { ok, data } = await apiFetch('cart/add/', {
     method: 'POST',
     body: JSON.stringify({ product_id: productId, quantity: 1 }),
   });
